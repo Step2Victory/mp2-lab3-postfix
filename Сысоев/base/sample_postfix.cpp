@@ -11,9 +11,11 @@ int main()
   double res;
 
   setlocale(LC_ALL, "Russian");
-  //cout << "Введите арифметическое выражение: ";
-  //cin >> expression;
-  //cout << expression << endl;
+  cout << "Введите арифметическое выражение: ";
+  getline(cin, expression);
+  cout << expression << endl;
+  
+  postfix.SetInfix(expression);
   cout << "Арифметическое выражение: " << postfix.GetInfix() << endl;
   postfix.ToPostfix();
   cout << "Постфиксная форма: " << postfix.GetPostfix() << endl;
