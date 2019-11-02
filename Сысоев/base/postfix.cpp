@@ -88,8 +88,16 @@ string TPostfix::ToPostfix()
 	string op = "*/-+(";
 	for (stringstream is(infix); is >> word;)
 	{
-		if (word == "*" || word == "/" || word == "(")
+		if (word == "(")
 			stack.push(word);
+		else if (word == "*" || word == "/")
+		{
+			while (!stack.isEmpty() && (stack.Top() == "/" || stack.Top() == "*"))
+			{
+				postfix += stack.pop() + " ";
+			}
+			stack.push(word);
+		}	
 		else if (word == ")")
 		{
 			while (stack.Top() != "(")
@@ -100,11 +108,8 @@ string TPostfix::ToPostfix()
 			stack.push(word);
 		else if ((word == "+" || word == "-") && !(stack.isEmpty()))
 		{
-			if (stack.Top() == "/" || stack.Top() == "*")
-			{
-				while (!stack.isEmpty() && stack.Top() != "(")
-					postfix += stack.pop() + " ";
-			}
+			while (!stack.isEmpty() && stack.Top() != "(")
+				postfix += stack.pop() + " ";
 			stack.push(word);
 		}
 		else
@@ -118,20 +123,26 @@ string TPostfix::ToPostfix()
 	return postfix;
 }
 
-double TPostfix::Calculate()
+double TPostfix::Calculate(string s)
 {
 	map<string, double> vars;
-	string word;
+	stringstream input(s);
+	string word, op = "*/+-";
 	for (stringstream is(infix); is >> word;)
 	{
-		if (word != "+" && word != "-" && word != "*" && word != "/" && word != "(" && word != ")" && (word[0] < '0' || word[0] > '9') && vars.find(word) == vars.end())
+		if (op.find(word) == string::npos && word != "(" && word != ")" && (word[0] < '0' || word[0] > '9') && vars.find(word) == vars.end())
 		{	
 			double a;
-			cout << "Введите переменную " << word << ": ";
-			cin >> a;
+			if (s != "")
+				input >> a;
+			else
+			{
+				cout << "Введите переменную " << word << ": ";
+				cin >> a;
+			}
 			vars[word] = a;
 		}
-		else
+		else if (word[0] >= '0' && word[0] <= '9')
 		{
 			double a;
 			stringstream tmp(word);

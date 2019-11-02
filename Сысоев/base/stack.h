@@ -19,6 +19,13 @@ public:
     pMem = new T[size];
   }
  
+  void print()
+  {
+	  for (int i = 0; i <= top; ++i)
+		  cout << pMem[i] << " ";
+	  cout << endl;
+  }
+
   bool isEmpty()
   {
 	  if (top < 0)

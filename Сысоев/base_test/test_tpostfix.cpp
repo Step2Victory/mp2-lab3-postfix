@@ -58,6 +58,21 @@ TEST(TPostfix, can_calculate)
 	EXPECT_EQ(50, pf.Calculate());
 }
 
+TEST(TPostfix, correct_postfix)
+{
+	TPostfix pf;
+	string a = "a+b*c/d-e+f";
+	pf.SetInfix(a);
+	EXPECT_EQ(pf.ToPostfix(), "a b c * d / + e - f +");
+}
 
+TEST(TPostfix, correct_ans_a_plus_a)
+{
+	TPostfix pf;
+	string a = "a+a";
+	pf.SetInfix(a);
+	pf.ToPostfix();
+	EXPECT_EQ(2, pf.Calculate("1 1"));
+}
 
 
